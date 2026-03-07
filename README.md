@@ -56,16 +56,20 @@ Fire up Stan's Robot Shop with:
 ```shell
 $ docker-compose up
 ```
+Access the Application
+Once the services start successfully, open the application in your browser:
+http://localhost:8080
+<img width="1877" height="965" alt="image" src="https://github.com/user-attachments/assets/7423f7f2-4d84-45bf-8bbf-08f0cb7aba5c" />
 
-If you want to fire up some load as well:
 
-```shell
-$ docker-compose -f docker-compose.yaml -f docker-compose-load.yaml up
-```
+Running Docker Containers
+The following screenshot shows all microservices containers running successfully.
+<img width="1912" height="442" alt="image" src="https://github.com/user-attachments/assets/83ae3d72-2876-41c9-8758-3df5e6fe9e45" />
 
-If you are running it locally on a Linux host you can also run the Instana [agent](https://docs.instana.io/quick_start/agent_setup/container/docker/) locally, unfortunately the agent is currently not supported on Mac.
 
-There is also only limited support on ARM architectures at the moment.
+
+
+
 
 ## Marathon / DCOS
 
