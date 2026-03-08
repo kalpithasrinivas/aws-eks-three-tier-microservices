@@ -163,13 +163,16 @@ This command automatically created:
 <li>kube-proxy</li>
 </ul>
 
+<img src=<img width="1919" height="615" alt="image" src="https://github.com/user-attachments/assets/319e41fd-bcfd-4675-a511-71d4916264cb" />" width="900">
+
 <h3>Cluster Verification</h3>
 
 <pre>
 kubectl get nodes
 </pre>
 
-<img src="screenshots/cluster-nodes.png" width="900">
+<img src="<img width="813" height="93" alt="image" src="https://github.com/user-attachments/assets/60d0bd52-6e8a-4041-a425-056a037da2c1" />
+" width="900">
 
 <hr>
 
@@ -243,7 +246,8 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 --set clusterName=robot-shop-eks-cluster
 </pre>
 
-<img src="screenshots/alb-controller.png" width="900">
+<img src="<img width="935" height="75" alt="image" src="https://github.com/user-attachments/assets/04fdd2cb-26a6-4395-a9a1-6e2aec384d01" />
+" />" width="900">
 
 <hr>
 
@@ -284,7 +288,8 @@ helm install robot-shop --namespace robot-shop .
 kubectl get pods -n robot-shop
 </pre>
 
-<img src="screenshots/pods-running.png" width="900">
+<img src="<img width="1051" height="361" alt="image" src="https://github.com/user-attachments/assets/fde27226-3b5b-473c-afcd-7a2016142516" />
+" width="900">
 
 <hr>
 
@@ -333,7 +338,8 @@ kubectl apply -f ingress.yaml
 kubectl get ingress -n robot-shop
 </pre>
 
-<img src="screenshots/alb.png" width="900">
+<img src="<img width="1222" height="63" alt="image" src="https://github.com/user-attachments/assets/e8e03883-5c9a-44da-aaf4-f017aa5187fd" />
+" width="900">
 
 <hr>
 
@@ -347,7 +353,10 @@ The application is accessible using the AWS ALB DNS name.
 http://k8s-robotsho-robotsho-xxxxx.us-east-1.elb.amazonaws.com
 </pre>
 
-<img src="screenshots/robot-shop-ui.png" width="900">
+<img src="<img width="1904" height="898" alt="image" src="https://github.com/user-attachments/assets/d44c4b23-58f1-4812-9816-c1c2108fd5c3" />
+" width="900">
+<img src=<img width="1912" height="896" alt="image" src="https://github.com/user-attachments/assets/36617102-a035-42ed-b8f5-67e8e546761b" /> " width="900">
+
 
 <hr>
 
