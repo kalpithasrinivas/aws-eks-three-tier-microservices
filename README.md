@@ -66,7 +66,7 @@ The following screenshot shows all microservices containers running successfully
 <img width="1912" height="442" alt="image" src="https://github.com/user-attachments/assets/83ae3d72-2876-41c9-8758-3df5e6fe9e45" />
 
 
-Deploying the Application on AWS EKS
+**Deploying the Application on AWS EKS**
 
 After verifying that the Robot Shop application runs successfully using Docker Compose locally, the next step is deploying it to a production-grade Kubernetes environment using Amazon EKS (Elastic Kubernetes Service).
 
@@ -74,7 +74,7 @@ Amazon EKS is a managed Kubernetes service that allows us to run containerized a
 
 The following infrastructure components were configured before deploying the application.
 
-Step 1 – Creating the EKS Cluster
+**Step 1 – Creating the EKS Cluster**
 
 The Kubernetes cluster was created using eksctl, a CLI tool that simplifies EKS cluster creation.
 
@@ -106,7 +106,7 @@ Screenshot
 <img width="821" height="79" alt="image" src="https://github.com/user-attachments/assets/9af3aa9f-f3d0-46c1-a70f-38ada0b7150f" />
 
 
-Step 2 – Enabling IAM OIDC Provider
+**Step 2 – Enabling IAM OIDC Provider**
 
 IAM OIDC Provider enables IAM Roles for Service Accounts (IRSA) which allows Kubernetes pods to securely access AWS services.
 Without OIDC, Kubernetes pods cannot assume IAM roles.
@@ -132,7 +132,7 @@ AWS Load Balancer Controller
 EBS CSI Driver
 Other AWS integrations
 
-Step 3 – Installing AWS Load Balancer Controller
+**Step 3 – Installing AWS Load Balancer Controller**
 
 The AWS Load Balancer Controller allows Kubernetes to automatically create Application Load Balancers (ALB).
 
@@ -182,7 +182,7 @@ kubectl get deployment -n kube-system aws-load-balancer-controller
 Screenshot
 <img width="1262" height="59" alt="image" src="https://github.com/user-attachments/assets/941ff202-04f5-420d-8e94-0a11374b25da" />
 
-Step 4 – Configuring EBS CSI Driver
+**Step 4 – Configuring EBS CSI Driver**
 
 The Amazon EBS CSI Driver allows Kubernetes to dynamically create and attach EBS volumes for persistent storage.
 This is important for applications that require persistent data storage such as:
