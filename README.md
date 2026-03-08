@@ -104,7 +104,6 @@ http://localhost:8080
 </pre>
 
 <img width="1877" height="965" src="<img width="1904" height="971" alt="image" src="https://github.com/user-attachments/assets/ef6ce96f-850c-44d9-9ce6-b3accb382833" />
-" />
 
 <h3>Running Docker Containers</h3>
 
@@ -444,9 +443,9 @@ The application is accessible using the AWS ALB DNS name.
 http://k8s-robotsho-robotsho-xxxxx.us-east-1.elb.amazonaws.com
 </pre>
 
-<img width="1904" height="898" alt="image" src="<img width="1913" height="861" alt="image" src="https://github.com/user-attachments/assets/a703b129-9965-4de0-ab8f-96447473c2e3" />
+<img width="1913" height="861" alt="image" src="https://github.com/user-attachments/assets/a703b129-9965-4de0-ab8f-96447473c2e3" />
 
-<img width="1912" height="896" alt="image" src="<img width="1892" height="893" alt="image" src="https://github.com/user-attachments/assets/3fb534ef-22df-4b3d-9042-8de3fd03cc3e" />
+<img width="1892" height="893" alt="image" src="https://github.com/user-attachments/assets/3fb534ef-22df-4b3d-9042-8de3fd03cc3e" />
 
 <hr>
 
