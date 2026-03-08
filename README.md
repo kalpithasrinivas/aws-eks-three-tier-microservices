@@ -25,6 +25,97 @@ The goal of this project is to showcase real-world DevOps practices such as:
 <li>Scaling Kubernetes worker nodes</li>
 <li>Troubleshooting Kubernetes scheduling issues</li>
 </ul>
+<hr>
+
+<hr>
+
+<h2>🐳 Run the Application Locally (Docker Compose)</h2>
+
+<p>
+Before deploying the Robot Shop application to <b>Amazon EKS</b>, the application was first verified locally using <b>Docker Compose</b>.
+Running the application locally ensures that all microservices function correctly before moving to a Kubernetes environment.
+</p>
+
+<p>
+Stan's Robot Shop is a <b>microservices based e-commerce application</b> consisting of multiple services such as:
+</p>
+
+<ul>
+<li>Web (AngularJS + Nginx)</li>
+<li>Cart Service (NodeJS)</li>
+<li>Catalogue Service (Golang)</li>
+<li>User Service (PHP)</li>
+<li>Shipping Service (Java Spring Boot)</li>
+<li>Ratings Service (Python Flask)</li>
+<li>Dispatch Service</li>
+<li>MongoDB</li>
+<li>MySQL</li>
+<li>Redis</li>
+<li>RabbitMQ</li>
+</ul>
+
+<p>
+Each service runs inside an independent Docker container.
+</p>
+
+<h3>Build Images (Optional)</h3>
+
+<p>
+If you want to build the application images locally instead of using prebuilt images from Docker Hub, run the following commands.
+</p>
+
+<pre>
+export INSTANA_AGENT_KEY="&lt;your agent key&gt;"
+docker-compose build
+</pre>
+
+<p>
+If you changed the image registry in the <code>.env</code> file, push the images to that registry.
+</p>
+
+<pre>
+docker-compose push
+</pre>
+
+<h3>Pull Images from Docker Hub</h3>
+
+<p>
+If you do not build the images locally, pull the images directly from Docker Hub.
+</p>
+
+<pre>
+docker-compose pull
+</pre>
+
+<h3>Start the Application</h3>
+
+<pre>
+docker-compose up
+</pre>
+
+<h3>Access the Application</h3>
+
+<p>
+Once all containers start successfully, open the application in your browser:
+</p>
+
+<pre>
+http://localhost:8080
+</pre>
+
+<img width="1877" height="965" src="https://github.com/user-attachments/assets/7423f7f2-4d84-45bf-8bbf-08f0cb7aba5c" />
+
+<h3>Running Docker Containers</h3>
+
+<p>
+The screenshot below shows all Robot Shop microservices running successfully as Docker containers.
+</p>
+
+<img width="1912" height="442" src="https://github.com/user-attachments/assets/83ae3d72-2876-41c9-8758-3df5e6fe9e45" />
+
+<p>
+After confirming that the application works locally, the next step is deploying it on a production-grade Kubernetes environment using <b>Amazon EKS</b>.
+</p>
 
 <hr>
 
