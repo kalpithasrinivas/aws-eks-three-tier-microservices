@@ -103,7 +103,8 @@ Once all containers start successfully, open the application in your browser:
 http://localhost:8080
 </pre>
 
-<img width="1877" height="965" src="https://github.com/user-attachments/assets/7423f7f2-4d84-45bf-8bbf-08f0cb7aba5c" />
+<img width="1877" height="965" src="<img width="1904" height="971" alt="image" src="https://github.com/user-attachments/assets/ef6ce96f-850c-44d9-9ce6-b3accb382833" />
+" />
 
 <h3>Running Docker Containers</h3>
 
