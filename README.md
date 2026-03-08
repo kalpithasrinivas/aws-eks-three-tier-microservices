@@ -78,7 +78,6 @@ The following infrastructure components were configured before deploying the app
 
 The Kubernetes cluster was created using eksctl, a CLI tool that simplifies EKS cluster creation.
 
-Command Used
 eksctl create cluster \
 --name robot-shop-eks-cluster \
 --region us-east-1 \
@@ -87,8 +86,8 @@ eksctl create cluster \
 --node-type t3.small \
 --nodes 2 \
 --managed
-What This Command Creates
 
+What This Command Creates
 This single command automatically provisions the following AWS resources:
 
 EKS Control Plane
@@ -111,7 +110,6 @@ Screenshot
 IAM OIDC Provider enables IAM Roles for Service Accounts (IRSA) which allows Kubernetes pods to securely access AWS services.
 Without OIDC, Kubernetes pods cannot assume IAM roles.
 
-Set Cluster Name
 export cluster_name=robot-shop-eks-cluster
 Retrieve OIDC ID
 oidc_id=$(aws eks describe-cluster \
@@ -135,7 +133,6 @@ Other AWS integrations
 **Step 3 – Installing AWS Load Balancer Controller**
 
 The AWS Load Balancer Controller allows Kubernetes to automatically create Application Load Balancers (ALB).
-
 This enables external users to access applications running inside the Kubernetes cluster.
 
 Download IAM Policy
@@ -167,7 +164,6 @@ aws eks describe-cluster \
 --output text
 
 Install controller:
-
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 -n kube-system \
 --set clusterName=robot-shop-eks-cluster \
@@ -204,12 +200,9 @@ eksctl create addon \
 --cluster robot-shop-eks-cluster \
 --service-account-role-arn arn:aws:iam::<ACCOUNT-ID>:role/AmazonEKS_EBS_CSI_DriverRole \
 --force
+
 Verify Driver Installation
 kubectl get pods -n kube-system
-
-Expected output should include:
-ebs-csi-controller
-ebs-csi-node
 
 Screenshot
 <img width="917" height="299" alt="image" src="https://github.com/user-attachments/assets/d7841fb2-f6b4-4dd1-8334-c98da4487adf" />
