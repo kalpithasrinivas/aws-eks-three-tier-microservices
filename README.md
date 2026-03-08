@@ -1,83 +1,144 @@
-# Three Tier Architecture Deployment on AWS EKS
+<h1 align="center">🚀 Three Tier Microservices Deployment on AWS EKS</h1>
 
-Stan's Robot Shop is a sample microservice application you can use as a sandbox to test and learn containerised application orchestration and monitoring techniques. It is not intended to be a comprehensive reference example of how to write a microservices application, although you will better understand some of those concepts by playing with Stan's Robot Shop. To be clear, the error handling is patchy and there is not any security built into the application.
+<p align="center">
+Deploying a Production-Style Microservices Application using <b>AWS EKS, Kubernetes, Helm and AWS ALB</b>
+</p>
 
-You can get more detailed information from my [blog post](https://www.instana.com/blog/stans-robot-shop-sample-microservice-application/) about this sample microservice application.
+<hr>
 
-This sample microservice application has been built using these technologies:
-- NodeJS ([Express](http://expressjs.com/))
-- Java ([Spring Boot](https://spring.io/))
-- Python ([Flask](http://flask.pocoo.org))
-- Golang
-- PHP (Apache)
-- MongoDB
-- Redis
-- MySQL ([Maxmind](http://www.maxmind.com) data)
-- RabbitMQ
-- Nginx
-- AngularJS (1.x)
+<h2>📌 Project Overview</h2>
 
-The various services in the sample application already include all required Instana components installed and configured. The Instana components provide automatic instrumentation for complete end to end [tracing](https://docs.instana.io/core_concepts/tracing/), as well as complete visibility into time series metrics for all the technologies.
+<p>
+This project demonstrates the deployment of a <b>microservices based e-commerce application (Stan's Robot Shop)</b> on <b>Amazon Elastic Kubernetes Service (EKS)</b>.
+</p>
 
+<p>
+The goal of this project is to showcase real-world DevOps practices such as:
+</p>
 
-## Build from Source
-To optionally build from source (you will need a newish version of Docker to do this) use Docker Compose. Optionally edit the `.env` file to specify an alternative image registry and version tag; see the official [documentation](https://docs.docker.com/compose/env-file/) for more information.
+<ul>
+<li>Container orchestration using Kubernetes</li>
+<li>Infrastructure provisioning on AWS</li>
+<li>Application deployment using Helm</li>
+<li>External traffic routing using AWS ALB</li>
+<li>Persistent storage using EBS</li>
+<li>Scaling Kubernetes worker nodes</li>
+<li>Troubleshooting Kubernetes scheduling issues</li>
+</ul>
 
-To download the tracing module for Nginx, it needs a valid Instana agent key. Set this in the environment before starting the build.
+<hr>
 
-```shell
-$ export INSTANA_AGENT_KEY="<your agent key>"
-```
+<h2>🏗 Architecture</h2>
 
-Now build all the images.
+<pre>
+User
+  │
+  ▼
+AWS Application Load Balancer
+  │
+  ▼
+Kubernetes Ingress
+  │
+  ▼
+Web Service (Frontend)
+  │
+  ▼
+Microservices Layer
+ ├── Cart
+ ├── Catalogue
+ ├── User
+ ├── Shipping
+ ├── Payment
+ ├── Ratings
+ └── Dispatch
+  │
+  ▼
+Databases
+ ├── MongoDB
+ ├── MySQL
+ ├── Redis
+ └── RabbitMQ
+</pre>
 
-```shell
-$ docker-compose build
-```
+<hr>
 
-If you modified the `.env` file and changed the image registry, you need to push the images to that registry
+<h2>🧰 Technologies Used</h2>
 
-```shell
-$ docker-compose push
-```
+<table>
+<tr>
+<th>Technology</th>
+<th>Purpose</th>
+</tr>
 
-## Run Locally
-You can run it locally for testing.
+<tr>
+<td>AWS EKS</td>
+<td>Managed Kubernetes cluster</td>
+</tr>
 
-If you did not build from source, don't worry all the images are on Docker Hub. Just pull down those images first using:
+<tr>
+<td>Docker</td>
+<td>Containerization</td>
+</tr>
 
-```shell
-$ docker-compose pull
-```
+<tr>
+<td>Kubernetes</td>
+<td>Container orchestration</td>
+</tr>
 
-Fire up Stan's Robot Shop with:
+<tr>
+<td>Helm</td>
+<td>Kubernetes package manager</td>
+</tr>
 
-```shell
-$ docker-compose up
-```
-Access the Application
-Once the services start successfully, open the application in your browser:
-http://localhost:8080
-<img width="1877" height="965" alt="image" src="https://github.com/user-attachments/assets/7423f7f2-4d84-45bf-8bbf-08f0cb7aba5c" />
+<tr>
+<td>AWS Load Balancer Controller</td>
+<td>Integrates ALB with Kubernetes</td>
+</tr>
 
+<tr>
+<td>EBS CSI Driver</td>
+<td>Persistent storage</td>
+</tr>
 
-Running Docker Containers
-The following screenshot shows all microservices containers running successfully.
-<img width="1912" height="442" alt="image" src="https://github.com/user-attachments/assets/83ae3d72-2876-41c9-8758-3df5e6fe9e45" />
+<tr>
+<td>MongoDB / MySQL / Redis</td>
+<td>Application databases</td>
+</tr>
 
+<tr>
+<td>RabbitMQ</td>
+<td>Message queue</td>
+</tr>
 
-**Deploying the Application on AWS EKS**
+</table>
 
-After verifying that the Robot Shop application runs successfully using Docker Compose locally, the next step is deploying it to a production-grade Kubernetes environment using Amazon EKS (Elastic Kubernetes Service).
+<hr>
 
-Amazon EKS is a managed Kubernetes service that allows us to run containerized applications without managing the Kubernetes control plane.
+<h2>📦 Application Microservices</h2>
 
-The following infrastructure components were configured before deploying the application.
+<ul>
+<li><b>Web</b> – AngularJS frontend</li>
+<li><b>Cart Service</b> – NodeJS</li>
+<li><b>Catalogue Service</b> – Golang</li>
+<li><b>User Service</b> – PHP</li>
+<li><b>Shipping Service</b> – Java Spring Boot</li>
+<li><b>Ratings Service</b> – Python Flask</li>
+<li><b>Dispatch Service</b></li>
+<li><b>MongoDB</b> – Product database</li>
+<li><b>MySQL</b> – User data</li>
+<li><b>Redis</b> – Cache</li>
+<li><b>RabbitMQ</b> – Messaging system</li>
+</ul>
 
-**Step 1 – Creating the EKS Cluster**
+<hr>
 
-The Kubernetes cluster was created using eksctl, a CLI tool that simplifies EKS cluster creation.
+<h2>⚙ Step 1 – Create EKS Cluster</h2>
 
+<p>
+The Kubernetes cluster was created using <b>eksctl</b>.
+</p>
+
+<pre>
 eksctl create cluster \
 --name robot-shop-eks-cluster \
 --region us-east-1 \
@@ -86,196 +147,244 @@ eksctl create cluster \
 --node-type t3.small \
 --nodes 2 \
 --managed
+</pre>
 
-What This Command Creates
-This single command automatically provisions the following AWS resources:
+<p>
+This command automatically created:
+</p>
 
-EKS Control Plane
-EC2 Worker Nodes
-VPC
-Public & Private Subnets
-Security Groups
-Kubernetes Networking (VPC CNI)
-CoreDNS
-kube-proxy
+<ul>
+<li>EKS control plane</li>
+<li>EC2 worker nodes</li>
+<li>VPC and subnets</li>
+<li>Security groups</li>
+<li>Kubernetes networking</li>
+<li>CoreDNS</li>
+<li>kube-proxy</li>
+</ul>
 
-Verifying the Cluster
+<h3>Cluster Verification</h3>
+
+<pre>
 kubectl get nodes
-Screenshot
-<img width="821" height="79" alt="image" src="https://github.com/user-attachments/assets/9af3aa9f-f3d0-46c1-a70f-38ada0b7150f" />
+</pre>
 
+<img src="screenshots/cluster-nodes.png" width="900">
 
-**Step 2 – Enabling IAM OIDC Provider**
+<hr>
 
-IAM OIDC Provider enables IAM Roles for Service Accounts (IRSA) which allows Kubernetes pods to securely access AWS services.
-Without OIDC, Kubernetes pods cannot assume IAM roles.
+<h2>🔐 Step 2 – Enable IAM OIDC Provider</h2>
 
+<p>
+OIDC allows Kubernetes pods to securely access AWS services using IAM roles.
+</p>
+
+<pre>
 export cluster_name=robot-shop-eks-cluster
-Retrieve OIDC ID
-oidc_id=$(aws eks describe-cluster \
---name $cluster_name \
---query "cluster.identity.oidc.issuer" \
---output text | cut -d '/' -f 5)
-Check if OIDC Provider Exists
-aws iam list-open-id-connect-providers | grep $oidc_id
-Associate IAM OIDC Provider
+</pre>
+
+<pre>
 eksctl utils associate-iam-oidc-provider \
 --cluster $cluster_name \
 --approve
+</pre>
 
-Why This Step is Required
+<p>
+Required for:
+</p>
 
-This enables Kubernetes service accounts to assume IAM roles securely, which is required for:
-AWS Load Balancer Controller
-EBS CSI Driver
-Other AWS integrations
+<ul>
+<li>AWS Load Balancer Controller</li>
+<li>EBS CSI Driver</li>
+</ul>
 
-**Step 3 – Installing AWS Load Balancer Controller**
+<hr>
 
-The AWS Load Balancer Controller allows Kubernetes to automatically create Application Load Balancers (ALB).
-This enables external users to access applications running inside the Kubernetes cluster.
+<h2>🌐 Step 3 – Install AWS Load Balancer Controller</h2>
 
-Download IAM Policy
-curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.11.0/docs/install/iam_policy.json
-Create IAM Policy
+<p>
+The AWS Load Balancer Controller allows Kubernetes to automatically create <b>AWS Application Load Balancers</b>.
+</p>
+
+<h3>Create IAM Policy</h3>
+
+<pre>
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+</pre>
+
+<pre>
 aws iam create-policy \
 --policy-name AWSLoadBalancerControllerIAMPolicy \
 --policy-document file://iam_policy.json
-Create IAM Service Account
+</pre>
+
+<h3>Create Service Account</h3>
+
+<pre>
 eksctl create iamserviceaccount \
 --cluster robot-shop-eks-cluster \
 --namespace kube-system \
 --name aws-load-balancer-controller \
 --role-name AmazonEKSLoadBalancerControllerRole \
---attach-policy-arn arn:aws:iam::<ACCOUNT-ID>:policy/AWSLoadBalancerControllerIAMPolicy \
+--attach-policy-arn arn:aws:iam::ACCOUNT-ID:policy/AWSLoadBalancerControllerIAMPolicy \
 --approve
+</pre>
 
-Install ALB Controller using Helm
-Add Helm repository:
+<h3>Install Controller Using Helm</h3>
+
+<pre>
 helm repo add eks https://aws.github.io/eks-charts
-
-Update Helm repo:
 helm repo update
+</pre>
 
-Get VPC ID:
-aws eks describe-cluster \
---name robot-shop-eks-cluster \
---query "cluster.resourcesVpcConfig.vpcId" \
---output text
-
-Install controller:
+<pre>
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 -n kube-system \
---set clusterName=robot-shop-eks-cluster \
---set serviceAccount.create=false \
---set serviceAccount.name=aws-load-balancer-controller \
---set region=us-east-1 \
---set vpcId=<VPC-ID>
+--set clusterName=robot-shop-eks-cluster
+</pre>
 
-Verify Installation
-kubectl get deployment -n kube-system aws-load-balancer-controller
+<img src="screenshots/alb-controller.png" width="900">
 
-Screenshot
-<img width="1262" height="59" alt="image" src="https://github.com/user-attachments/assets/941ff202-04f5-420d-8e94-0a11374b25da" />
+<hr>
 
-**Step 4 – Configuring EBS CSI Driver**
+<h2>💾 Step 4 – Install EBS CSI Driver</h2>
 
-The Amazon EBS CSI Driver allows Kubernetes to dynamically create and attach EBS volumes for persistent storage.
-This is important for applications that require persistent data storage such as:
-MongoDB
-MySQL
+<p>
+The EBS CSI driver enables dynamic volume provisioning for stateful applications.
+</p>
 
-Create IAM Role
-eksctl create iamserviceaccount \
---name ebs-csi-controller-sa \
---namespace kube-system \
---cluster robot-shop-eks-cluster \
---role-name AmazonEKS_EBS_CSI_DriverRole \
---role-only \
---attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
---approve
-Install EBS CSI Driver
+<pre>
 eksctl create addon \
 --name aws-ebs-csi-driver \
+--cluster robot-shop-eks-cluster
+</pre>
+
+Used by:
+
+<ul>
+<li>MongoDB</li>
+<li>MySQL</li>
+</ul>
+
+<hr>
+
+<h2>🚀 Step 5 – Deploy Robot Shop Application</h2>
+
+<p>Deploy application using Helm.</p>
+
+<pre>
+cd eks/helm
+kubectl create namespace robot-shop
+helm install robot-shop --namespace robot-shop .
+</pre>
+
+<h3>Verify Pods</h3>
+
+<pre>
+kubectl get pods -n robot-shop
+</pre>
+
+<img src="screenshots/pods-running.png" width="900">
+
+<hr>
+
+<h2>⚠ Troubleshooting</h2>
+
+<p>
+Some pods were stuck in <b>Pending</b> state due to insufficient node memory.
+</p>
+
+<pre>
+kubectl describe pod mysql-xxxxx -n robot-shop
+</pre>
+
+Error:
+
+<pre>
+Insufficient memory
+</pre>
+
+<h3>Solution – Scale Node Group</h3>
+
+<pre>
+eksctl scale nodegroup \
 --cluster robot-shop-eks-cluster \
---service-account-role-arn arn:aws:iam::<ACCOUNT-ID>:role/AmazonEKS_EBS_CSI_DriverRole \
---force
+--name robot-shop-nodes \
+--nodes-min 1 \
+--nodes-max 4 \
+--nodes 3
+</pre>
 
-Verify Driver Installation
-kubectl get pods -n kube-system
+<hr>
 
-Screenshot
-<img width="917" height="299" alt="image" src="https://github.com/user-attachments/assets/d7841fb2-f6b4-4dd1-8334-c98da4487adf" />
+<h2>🌍 Step 6 – Expose Application Using Ingress</h2>
 
-EKS Infrastructure Overview
+<p>
+Ingress was configured to expose the application through AWS ALB.
+</p>
 
-The following infrastructure components were configured before deploying the application.
-Component	Purpose
-EKS Cluster	Kubernetes control plane
-Worker Nodes	Run application containers
-IAM OIDC Provider	Secure AWS access for pods
-AWS Load Balancer Controller	Expose services externally
-EBS CSI Driver	Persistent storage for databases
+<pre>
+kubectl apply -f ingress.yaml
+</pre>
 
+<h3>Verify Ingress</h3>
 
+<pre>
+kubectl get ingress -n robot-shop
+</pre>
 
+<img src="screenshots/alb.png" width="900">
 
-## Marathon / DCOS
+<hr>
 
-The manifests for robotshop are in the *DCOS/* directory. These manifests were built using a fresh install of DCOS 1.11.0. They should work on a vanilla HA or single instance install.
+<h2>🖥 Application Access</h2>
 
-You may install Instana via the DCOS package manager, instructions are here: https://github.com/dcos/examples/tree/master/instana-agent/1.9
+<p>
+The application is accessible using the AWS ALB DNS name.
+</p>
 
-## Kubernetes
-You can run Kubernetes locally using [minikube](https://github.com/kubernetes/minikube) or on one of the many cloud providers.
+<pre>
+http://k8s-robotsho-robotsho-xxxxx.us-east-1.elb.amazonaws.com
+</pre>
 
-The Docker container images are all available on [Docker Hub](https://hub.docker.com/u/robotshop/).
+<img src="screenshots/robot-shop-ui.png" width="900">
 
-Install Stan's Robot Shop to your Kubernetes cluster using the [Helm](K8s/helm/README.md) chart.
+<hr>
 
-To deploy the Instana agent to Kubernetes, just use the [helm](https://github.com/instana/helm-charts) chart.
+<h2>🧠 DevOps Skills Demonstrated</h2>
 
-## Accessing the Store
-If you are running the store locally via *docker-compose up* then, the store front is available on localhost port 8080 [http://localhost:8080](http://localhost:8080/)
+<ul>
+<li>AWS EKS cluster provisioning</li>
+<li>Kubernetes microservices deployment</li>
+<li>Helm application packaging</li>
+<li>Kubernetes networking using Ingress</li>
+<li>AWS ALB integration</li>
+<li>Persistent storage using EBS</li>
+<li>Cluster troubleshooting</li>
+<li>Scaling worker nodes</li>
+</ul>
 
-If you are running the store on Kubernetes via minikube then, find the IP address of Minikube and the Node Port of the web service.
+<hr>
 
-```shell
-$ minikube ip
-$ kubectl get svc web
-```
+<h2>🧹 Cleanup</h2>
 
-If you are using a cloud Kubernetes / Openshift / Mesosphere then it will be available on the load balancer of that system.
+<p>
+To avoid AWS charges delete the cluster after testing.
+</p>
 
-## Load Generation
-A separate load generation utility is provided in the `load-gen` directory. This is not automatically run when the application is started. The load generator is built with Python and [Locust](https://locust.io). The `build.sh` script builds the Docker image, optionally taking *push* as the first argument to also push the image to the registry. The registry and tag settings are loaded from the `.env` file in the parent directory. The script `load-gen.sh` runs the image, it takes a number of command line arguments. You could run the container inside an orchestration system (K8s) as well if you want to, an example descriptor is provided in K8s directory. For End-user Monitoring ,load is not automatically generated but by navigating through the Robotshop from the browser .For more details see the [README](load-gen/README.md) in the load-gen directory.  
+<pre>
+eksctl delete cluster robot-shop-eks-cluster
+</pre>
 
-## Website Monitoring / End-User Monitoring
+<hr>
 
-### Docker Compose
+<h2>👩‍💻 Author</h2>
 
-To enable Website Monioring / End-User Monitoring (EUM) see the official [documentation](https://docs.instana.io/website_monitoring/) for how to create a configuration. There is no need to inject the JavaScript fragment into the page, this will be handled automatically. Just make a note of the unique key and set the environment variable `INSTANA_EUM_KEY` and `INSTANA_EUM_REPORTING_URL` for the web image within `docker-compose.yaml`.
+<p>
+<b>Kalpitha Srinivas</b><br>
+DevOps Engineer
+</p>
 
-### Kubernetes
-
-The Helm chart for installing Stan's Robot Shop supports setting the key and endpoint url required for website monitoring, see the [README](K8s/helm/README.md).
-
-## Prometheus
-
-The cart and payment services both have Prometheus metric endpoints. These are accessible on `/metrics`. The cart service provides:
-
-* Counter of the number of items added to the cart
-
-The payment services provides:
-
-* Counter of the number of items perchased
-* Histogram of the total number of items in each cart
-* Histogram of the total value of each cart
-
-To test the metrics use:
-
-```shell
-$ curl http://<host>:8080/api/cart/metrics
-$ curl http://<host>:8080/api/payment/metrics
-```
-
+<p>
+<a href="https://www.linkedin.com/in/kalpitha-srinivas-740358220/">LinkedIn</a>
+</p>
