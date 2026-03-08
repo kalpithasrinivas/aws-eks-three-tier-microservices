@@ -122,33 +122,7 @@ After confirming that the application works locally, the next step is deploying 
 <h2>🏗 Architecture</h2>
 
 <pre>
-User
-  │
-  ▼
-AWS Application Load Balancer
-  │
-  ▼
-Kubernetes Ingress
-  │
-  ▼
-Web Service (Frontend)
-  │
-  ▼
-Microservices Layer
- ├── Cart
- ├── Catalogue
- ├── User
- ├── Shipping
- ├── Payment
- ├── Ratings
- └── Dispatch
-  │
-  ▼
-Databases
- ├── MongoDB
- ├── MySQL
- ├── Redis
- └── RabbitMQ
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/292b175f-8a1b-4a52-91f6-374d2a6f8adb" />
 </pre>
 
 <hr>
