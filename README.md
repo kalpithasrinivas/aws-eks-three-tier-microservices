@@ -19,7 +19,6 @@ This sample microservice application has been built using these technologies:
 
 The various services in the sample application already include all required Instana components installed and configured. The Instana components provide automatic instrumentation for complete end to end [tracing](https://docs.instana.io/core_concepts/tracing/), as well as complete visibility into time series metrics for all the technologies.
 
-To see the application performance results in the Instana dashboard, you will first need an Instana account. Don't worry a [trial account](https://instana.com/trial?utm_source=github&utm_medium=robot_shop) is free.
 
 ## Build from Source
 To optionally build from source (you will need a newish version of Docker to do this) use Docker Compose. Optionally edit the `.env` file to specify an alternative image registry and version tag; see the official [documentation](https://docs.docker.com/compose/env-file/) for more information.
@@ -67,6 +66,163 @@ The following screenshot shows all microservices containers running successfully
 <img width="1912" height="442" alt="image" src="https://github.com/user-attachments/assets/83ae3d72-2876-41c9-8758-3df5e6fe9e45" />
 
 
+Deploying the Application on AWS EKS
+
+After verifying that the Robot Shop application runs successfully using Docker Compose locally, the next step is deploying it to a production-grade Kubernetes environment using Amazon EKS (Elastic Kubernetes Service).
+
+Amazon EKS is a managed Kubernetes service that allows us to run containerized applications without managing the Kubernetes control plane.
+
+The following infrastructure components were configured before deploying the application.
+
+Step 1 – Creating the EKS Cluster
+
+The Kubernetes cluster was created using eksctl, a CLI tool that simplifies EKS cluster creation.
+
+Command Used
+eksctl create cluster \
+--name robot-shop-eks-cluster \
+--region us-east-1 \
+--zones us-east-1a,us-east-1b \
+--nodegroup-name robot-shop-nodes \
+--node-type t3.small \
+--nodes 2 \
+--managed
+What This Command Creates
+
+This single command automatically provisions the following AWS resources:
+
+EKS Control Plane
+EC2 Worker Nodes
+VPC
+Public & Private Subnets
+Security Groups
+Kubernetes Networking (VPC CNI)
+CoreDNS
+kube-proxy
+
+Verifying the Cluster
+kubectl get nodes
+Screenshot
+<img width="821" height="79" alt="image" src="https://github.com/user-attachments/assets/9af3aa9f-f3d0-46c1-a70f-38ada0b7150f" />
+
+
+Step 2 – Enabling IAM OIDC Provider
+
+IAM OIDC Provider enables IAM Roles for Service Accounts (IRSA) which allows Kubernetes pods to securely access AWS services.
+Without OIDC, Kubernetes pods cannot assume IAM roles.
+
+Set Cluster Name
+export cluster_name=robot-shop-eks-cluster
+Retrieve OIDC ID
+oidc_id=$(aws eks describe-cluster \
+--name $cluster_name \
+--query "cluster.identity.oidc.issuer" \
+--output text | cut -d '/' -f 5)
+Check if OIDC Provider Exists
+aws iam list-open-id-connect-providers | grep $oidc_id
+Associate IAM OIDC Provider
+eksctl utils associate-iam-oidc-provider \
+--cluster $cluster_name \
+--approve
+
+Why This Step is Required
+
+This enables Kubernetes service accounts to assume IAM roles securely, which is required for:
+AWS Load Balancer Controller
+EBS CSI Driver
+Other AWS integrations
+
+Step 3 – Installing AWS Load Balancer Controller
+
+The AWS Load Balancer Controller allows Kubernetes to automatically create Application Load Balancers (ALB).
+
+This enables external users to access applications running inside the Kubernetes cluster.
+
+Download IAM Policy
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.11.0/docs/install/iam_policy.json
+Create IAM Policy
+aws iam create-policy \
+--policy-name AWSLoadBalancerControllerIAMPolicy \
+--policy-document file://iam_policy.json
+Create IAM Service Account
+eksctl create iamserviceaccount \
+--cluster robot-shop-eks-cluster \
+--namespace kube-system \
+--name aws-load-balancer-controller \
+--role-name AmazonEKSLoadBalancerControllerRole \
+--attach-policy-arn arn:aws:iam::<ACCOUNT-ID>:policy/AWSLoadBalancerControllerIAMPolicy \
+--approve
+
+Install ALB Controller using Helm
+Add Helm repository:
+helm repo add eks https://aws.github.io/eks-charts
+
+Update Helm repo:
+helm repo update
+
+Get VPC ID:
+aws eks describe-cluster \
+--name robot-shop-eks-cluster \
+--query "cluster.resourcesVpcConfig.vpcId" \
+--output text
+
+Install controller:
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+-n kube-system \
+--set clusterName=robot-shop-eks-cluster \
+--set serviceAccount.create=false \
+--set serviceAccount.name=aws-load-balancer-controller \
+--set region=us-east-1 \
+--set vpcId=<VPC-ID>
+
+Verify Installation
+kubectl get deployment -n kube-system aws-load-balancer-controller
+
+Screenshot
+<img width="1262" height="59" alt="image" src="https://github.com/user-attachments/assets/941ff202-04f5-420d-8e94-0a11374b25da" />
+
+Step 4 – Configuring EBS CSI Driver
+
+The Amazon EBS CSI Driver allows Kubernetes to dynamically create and attach EBS volumes for persistent storage.
+This is important for applications that require persistent data storage such as:
+MongoDB
+MySQL
+
+Create IAM Role
+eksctl create iamserviceaccount \
+--name ebs-csi-controller-sa \
+--namespace kube-system \
+--cluster robot-shop-eks-cluster \
+--role-name AmazonEKS_EBS_CSI_DriverRole \
+--role-only \
+--attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+--approve
+Install EBS CSI Driver
+eksctl create addon \
+--name aws-ebs-csi-driver \
+--cluster robot-shop-eks-cluster \
+--service-account-role-arn arn:aws:iam::<ACCOUNT-ID>:role/AmazonEKS_EBS_CSI_DriverRole \
+--force
+Verify Driver Installation
+kubectl get pods -n kube-system
+
+Expected output should include:
+ebs-csi-controller
+ebs-csi-node
+
+Screenshot
+<img width="917" height="299" alt="image" src="https://github.com/user-attachments/assets/d7841fb2-f6b4-4dd1-8334-c98da4487adf" />
+
+EKS Infrastructure Overview
+
+The following infrastructure components were configured before deploying the application.
+Component	Purpose
+EKS Cluster	Kubernetes control plane
+Worker Nodes	Run application containers
+IAM OIDC Provider	Secure AWS access for pods
+AWS Load Balancer Controller	Expose services externally
+EBS CSI Driver	Persistent storage for databases
 
 
 
